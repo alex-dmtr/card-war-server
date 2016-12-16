@@ -20,13 +20,15 @@
               
               <br/>
               
-              <a href='https://www.dropbox.com/s/8cxl0dlzjekrhvs/card-war.zip?dl=0'><button class='btn btn-success'><big>Download</big></button></a>
+              <a href='https://www.dropbox.com/s/8cxl0dlzjekrhvs/card-war.zip?dl=1'><button class='btn btn-success'><big>Download</big></button></a>
               
               <br/>
               
               <?php
-                $version_data = json_decode(file_get_contents('https://www.dropbox.com/s/7w0d299ds0e63qe/version.json?dl=0'), true);
-                
+
+                $contents = file_get_contents('https://www.dropbox.com/s/7w0d299ds0e63qe/version.json?dl=1');
+                $version_data = json_decode($contents, true);
+                // echo $contents;
                 echo "<p>Build: " . '<b>' . $version_data['version'] . '</b>' . "</p>";
                 echo "<p>Date: " . $version_data['date'] . "</p>";
               ?>
