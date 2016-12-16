@@ -42,9 +42,8 @@ password=75acd52173ec2333583d9d0ba0d46577eaa8bd58b44bae2de99aa5aafe89d0d4")
     }
     
     else
-    
     {
-        require 'home.html';
+        require 'home.php';
     }
     // echo "Hello, world!";
 ?>
