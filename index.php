@@ -11,6 +11,8 @@ password=75acd52173ec2333583d9d0ba0d46577eaa8bd58b44bae2de99aa5aafe89d0d4")
     
     
     if (isset($_GET['table'])) {
+        
+        
         $query = 'SELECT * FROM ' . $_GET['table'];
         $result = pg_query($query) or die('Query failed: ' . pg_last_error());
     
