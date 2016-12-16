@@ -2,11 +2,8 @@
 <html>
     <head>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+        <link href='stylesheets/style.css'/>
         
-        <style>
-            body {
-                padding-top:50px;
-            }
         </style>
         
         <title>Card war</title>
@@ -24,14 +21,9 @@
               
               <br/>
               
-              <?php
-
-                $contents = file_get_contents('https://www.dropbox.com/s/7w0d299ds0e63qe/version.json?dl=1');
-                $version_data = json_decode($contents, true);
-                // echo $contents;
-                echo "<p>Build: " . '<b>' . $version_data['version'] . '</b>' . "</p>";
-                echo "<p>Date: " . $version_data['date'] . "</p>";
-              ?>
+              <p>Build: <b><%=data.version%></b></p>
+              <p>Date: <%=data.date%></p>
+              
         </div>
     </body>
 </html>
