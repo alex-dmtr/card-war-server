@@ -17,7 +17,10 @@ router.get('/query', function(req, res, next) {
   
   console.log(table);
 
-  global.db.query("SELECT * FROM " + table, null, function(err, result) {
+  var result = global.db.get().collection(table);
+  
+  result.find().toArray(function(error, result) {
+
     res.setHeader('Content-Type', 'application/json');
     res.send(result);
   });

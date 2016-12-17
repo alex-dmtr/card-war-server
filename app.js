@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 global.db = require('./db.js');
 
+
 var index = require('./routes/index');
 var users = require('./routes/users');
 
@@ -45,3 +46,10 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+
+global.db.connect(function(err) {
+  if (err)
+    console.log(err)
+  else
+    console.log("Connected to db")
+})
