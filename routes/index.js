@@ -7,7 +7,7 @@ router.get('/', function(req, res, next) {
     var request = require('request');
     request.get('https://www.dropbox.com/s/7w0d299ds0e63qe/version.json?dl=1', function (error, response, body) {
         
-      res.render('index', { data: JSON.parse(body)});
+      res.render('pages/index', { data: JSON.parse(body)});
     });
     
 });
