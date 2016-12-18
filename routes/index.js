@@ -21,17 +21,51 @@ router.get('/signup', function(req, res, next) {
 });
 
 router.post('/signup', function(req, res, next) {
-  console.log(req.body.username);
+  var username = req.body.username;
+  global.db.getUser (username, function(err, result) {
+    if (result != null) {
+      req.flash('error', 'User ' + username + ' already exists!');
+      res.redirect('/signup');
+    }
+    else
+    {
+      global.db.addUser(username, function(err, result) {
+          if (err != null) {
+              req.flash('info', 'User ' + username + 'succesfully registered');
+          }
 
-  res.redirect("/");
+          res.redirect('/');
+      });
+    }
+  });
+
 });
 
-router.get('/login', function(req, res, next) {
+router.get('/players',  function(req, res) {
+    global.db.get().collection("users").find().toArray(function(err, result) {
+      res.render('pages/players', {data: result, page_name: 'Players'});
+    });
+})
+
+router.get('/login', function(req, res) {
   res.render('pages/login', { page_name: 'Log in'});
 });
 
-router.post('/login', function(req, res, next) {
-  res.redirect("/");
+router.post('/login', function(req, res) {
+  var username = req.body.username;
+  global.db.login(username, function(err, result) {
+    if (result != null)
+     {
+      req.flash('info', 'Login succesful.')
+      req.session.user = username;
+      res.redirect('/')
+     } 
+     else
+     {
+      req.flash('error', 'Username and password combination not recognised.')
+      res.redirect('/')
+     }
+  });
 });
 
 router.get('/query', function(req, res, next) {
