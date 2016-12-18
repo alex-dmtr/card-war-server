@@ -12,6 +12,24 @@ router.get('/', function(req, res, next) {
     
 });
 
+router.get('/signup', function(req, res, next) {
+  res.render('pages/signup');
+});
+
+router.post('/signup', function(req, res, next) {
+  console.log(req.body.username);
+
+  res.redirect("/");
+});
+
+router.get('/login', function(req, res, next) {
+  res.render('pages/login');
+});
+
+router.post('/login', function(req, res, next) {
+  res.redirect("/");
+});
+
 router.get('/query', function(req, res, next) {
   var table = req.query.table;
   
