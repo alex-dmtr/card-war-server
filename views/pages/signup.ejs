@@ -1,27 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <% include ../partials/head %>
-  </head>
-  
-  <body>
-    <header>
-        <% include ../partials/header %>
-    </header>
+<% include ../partials/header %>
 
-    <div class="container">
-
-        <form role="form" method="POST" >
-            <div class="form-group">
-                <label for="username">
-                Username:
-                </label>
-                <input type="text" class="form-control" name="username" required/>
-            </div>
-            
-            <button type="submit" class="btn btn-primary">Sign up</button>
-            
-        </form>
+<form role="form" method="POST" >
+    <div class="form-group">
+        <label for="username">
+        Username:
+        </label>
+        <input type="text" class="form-control" name="username" required/>
     </div>
- </body>
-</html>
+    
+    <button type="submit" class="btn btn-primary">Sign up</button>
+    
+</form>
+
+<% include ../partials/footer %>

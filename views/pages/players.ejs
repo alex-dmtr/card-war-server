@@ -1,34 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <% include ../partials/head %>
-  </head>
+<% include ../partials/header %>
 
-  <body>
-    <header>
-        <% include ../partials/header %>
-    </header>
+<table class="table">
+	<thead>
+		<tr>
+			<th>username</th>
+		</tr>
+	</thead>
+	<tbody>
 
-    <div class="container">
-
-       <table class="table">
-		<thead>
+		<% for (var i = 0; i < data.length; i++) { %>
 			<tr>
-				<th>username</th>
+				<td>
+			<%= data[i].username %>
+				</td>
 			</tr>
-		</thead>
-		<tbody>
+		<% } %>
+	</tbody>
+</table>
 
-			<% for (var i = 0; i < data.length; i++) { %>
-				<tr>
-					<td>
-				<%= data[i].username %>
-					</td>
-				</tr>
-			<% } %>
-		</tbody>
-       </table>
-            
-    </div>
- </body>
-</html>
+<% include ../partials/footer %>

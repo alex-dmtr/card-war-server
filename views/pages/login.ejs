@@ -1,27 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <% include ../partials/head %>
-  </head>
-  
-  <body>
-    <header>
-        <% include ../partials/header %>
-    </header>
-
-    <div class="container">
-
-        <form role="form" method="POST" >
-            <div class="form-group">
-                <label for="username">
-                Username:
-                </label>
-                <input type="text" class="form-control" name="username" required/>
-            </div>
-            
-            <button type="submit" class="btn btn-primary">Log in</button>
-            
-        </form>
+<% include ../partials/header %>
+<form role="form" method="POST" >
+    <div class="form-group">
+        <label for="username">
+        Username:
+        </label>
+        <input type="text" class="form-control" name="username" required/>
     </div>
- </body>
-</html>
+    
+    <button type="submit" class="btn btn-primary">Log in</button>
+</form>
+<% include ../partials/footer %>
