@@ -44,7 +44,7 @@ class Board {
 
     var board = this.copy()
 
-    var card = { id: board._cardID++, type: card.type, player: card.player, state: card.state }
+    var card = { id: board._cardID++, type: card.type, player: card.player, state: card.state, cardType: card.cardType }
 
     board.cards.push(card)
 
@@ -58,7 +58,7 @@ class Board {
     var board = this.copy()
 
     for (var i = 0; i < army.length; i++)
-      board = board.addCard({type:army[i].type, player: player, state: 'DECK'})
+      board = board.addCard({type:army[i].type, player: player, state: 'DECK', cardType: army[i].cardType})
 
     return board
   }
@@ -67,12 +67,12 @@ class Board {
     var army = []
 
     for (var i = 1; i <= 5; i++) {
-      army.push({ type: 'CARD_SPEARMAN'})
-      army.push({ type: 'CARD_CROSSBOWMAN'})
+      army.push({ type: 'CARD_SPEARMAN', cardType: 'SOLDIER'})
+      army.push({ type: 'CARD_CROSSBOWMAN', cardType: 'SOLDIER'})
     }
 
     for (var i = 1; i <= 2; i++)
-      army.push({ type: 'CARD_KNIGHT'})
+      army.push({ type: 'CARD_KNIGHT', cardType: 'SOLDIER'})
 
     return army
   }
@@ -97,7 +97,12 @@ class Board {
       }
 
       if (criteria.hasOwnProperty('id')) {
-        if (card.id != citeria.id)
+        if (card.id != criteria.id)
+          ok = false
+      }
+
+      if (criteria.hasOwnProperty('position')) {
+        if (card.position != criteria.position)
           ok = false
       }
 
@@ -118,7 +123,7 @@ class Board {
 
   findCard(criteria) {
     for (var i = 0; i < this.cards.length; i++)
-      if (this.cardFitsCriteria(cards[i], criteria))
+      if (this.cardFitsCriteria(this.cards[i], criteria))
         return i
     return null
   }
@@ -170,6 +175,24 @@ class Board {
     }
 
     return board
+  }
+
+  findVacantBoardPositions(player) {
+    var board = this;
+
+    var positions = []
+
+    for (var flank = 1; flank <= 3; flank++)
+      for (var row = 1; row <= 2; row++)
+        for (var col = 1; col <= (row == 1? 2 : 3); col++) {
+
+          var occupant = board.findCard({position: {flank:flank, row:row, col: col}})
+          console.log(occupant)
+          if (occupant == null)
+            positions.push({flank:flank, row:row, col: col})
+        }
+
+    return positions
   }
 
 

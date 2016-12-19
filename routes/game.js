@@ -8,7 +8,7 @@ router.get('/newGame', function(req, res) {
 		var game = new Game()
 
 		game.startGame()
-
+		game.possibleActions = game.getPossibleActions()
     res.setHeader('Content-Type', 'application/json');
     res.send(game);
 })
