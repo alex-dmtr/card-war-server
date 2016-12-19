@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    
+
   res.render('pages/index', { page_name: 'Home'});
     
 });
@@ -11,7 +11,7 @@ router.get('/', function(req, res, next) {
 router.get('/download', function(req, res, next) {
     var request = require('request');
     request.get('https://www.dropbox.com/s/7w0d299ds0e63qe/version.json?dl=1', function (error, response, body) {
-        
+
       res.render('pages/download', { data: JSON.parse(body), page_name: 'Download'});
     });
 });
@@ -59,7 +59,7 @@ router.post('/login', function(req, res) {
       req.flash('info', 'Login succesful.')
       req.session.user = username;
       res.redirect('/')
-     } 
+     }
      else
      {
       req.flash('error', 'Username and password combination not recognised.')
@@ -70,17 +70,17 @@ router.post('/login', function(req, res) {
 
 router.get('/query', function(req, res, next) {
   var table = req.query.table;
-  
+
   console.log(table);
 
   var result = global.db.get().collection(table);
-  
+
   result.find().toArray(function(error, result) {
 
     res.setHeader('Content-Type', 'application/json');
     res.send(result);
   });
-  
+
 });
 
 module.exports = router;
