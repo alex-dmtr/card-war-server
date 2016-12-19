@@ -1,15 +1,16 @@
 var express = require('express')
 var router = express.Router()
-var Board = require('../game/board.js')
+// var Board = require('../game/board.js')
+var Game = require('../game/game.js')
 
 router.get('/newGame', function(req, res) {
 
-		var board = new Board()
+		var game = new Game()
 
-		board = board.addCard('CARD_CROSSBOWMAN', 0, 'DECK')
+		game.startGame()
 
     res.setHeader('Content-Type', 'application/json');
-    res.send(board);
+    res.send(game);
 })
 
 
