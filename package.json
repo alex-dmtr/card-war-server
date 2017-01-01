@@ -1,9 +1,9 @@
 {
-  "name": "workspace",
-  "version": "0.0.0",
+  "name": "rc-server",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
-    "test": "set DEBUG=card-war-server:* & nodemon app.js",
+    "test": "set DEBUG=rc-server:* & nodemon app.js",
     "start": "node app.js"
   },
   "dependencies": {

@@ -1,17 +1,21 @@
+var Card = require('./card')
+var Player = require('./player')
+
 class Board {
 
   constructor () {
     this.players = []
 
     for (var i = 0; i <= 1; i++) {
-      this.players[i] = { id: i, mp: 3 }
+      this.players[i] = new Player(i)
+      this.players[i].mp = 3
     }
 
     this.cards = []
 
     // this.history = []
 
-    this.activePlayer = 0
+    this.activePlayer_id = 0
 
     this._cardID = 0
   }
@@ -22,13 +26,13 @@ class Board {
     board.players = []
 
     for (var i = 0; i <= 1; i++) {
-      board.players[i] = this.players[i]
+      board.players[i] = this.players[i].copy()
     }
 
     board.cards = []
 
     for (var i = 0; i < this.cards.length; i++) {
-      board.cards[i] = this.cards[i]
+      board.cards[i] = this.cards[i].copy()
     }
 
     // board.history = []
@@ -36,7 +40,7 @@ class Board {
     // for (var i = 0; i < this.history.length; i++)
     //   board.history[i] = this.history[i]
 
-    board.activePlayer = this.activePlayer
+    board.activePlayer_id = this.activePlayer_id
 
     board._cardID = this._cardID
 
@@ -46,9 +50,15 @@ class Board {
   addCard (card) {
     var board = this.copy()
 
-    var card = { id: board._cardID++, type: card.type, player: card.player, state: card.state, cardType: card.cardType }
+    var newCard = new Card(board._cardID++)
 
-    board.cards.push(card)
+    newCard.type = card.type
+    newCard.player_id = card.player_id
+    newCard.status = card.status
+    newCard.cardType = card.cardType
+    newCard.health = card.health
+  
+    board.cards.push(newCard)
 
     return board
   }
@@ -57,7 +67,7 @@ class Board {
     var board = this.copy()
 
     for (var i = 0; i < army.length; i++) {
-      board = board.addCard({type: army[i].type, player: player, state: 'DECK', cardType: army[i].cardType})
+      board = board.addCard({type: army[i].type, player_id: player, status: 'DECK', cardType: army[i].cardType})
     }
 
     return board

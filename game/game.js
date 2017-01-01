@@ -12,16 +12,16 @@ class Game {
     var board = this.board.copy()
 
     if (action.type == 'START_TURN') {
-      board = board.drawCards(board.activePlayer, 0)
+      board = board.drawCards(board.activePlayer_id, 0)
       this.history.push({action: action, state: board})
 
       this.board = board
     }
     if (action.type == 'END_TURN') {
-      if (board.activePlayer == 0) {
-        board.activePlayer = 1
+      if (board.activePlayer_id == 0) {
+        board.activePlayer_id = 1
       } else {
-        board.activePlayer = 0
+        board.activePlayer_id = 0
       }
 
       this.board = board
@@ -75,7 +75,7 @@ class Game {
     board = board.drawCards(0, 4)
     board = board.drawCards(1, 4)
 
-    board.activePlayer = 0
+    board.activePlayer_id = 0
 
     this.board = board
     this.doAction({type: 'START_TURN'})
@@ -84,23 +84,23 @@ class Game {
   getPossibleActions () {
     var board = this.board
 
-    var hand_soldier_cards = board.findCards({player: board.activePlayer, state: 'HAND', cardType: 'SOLDIER'})
+    var hand_soldier_cards = board.findCards({player: board.activePlayer_id, state: 'HAND', cardType: 'SOLDIER'})
 
     var possibleActions = []
-    if (board.players[board.activePlayer].mp > 0) {
-      var emptyPositions = board.findVacantBoardPositions(board.activePlayer)
+    if (board.players[board.activePlayer_id].mp > 0) {
+      var emptyPositions = board.findVacantBoardPositions(board.activePlayer_id)
       for (var i = 0; i < hand_soldier_cards.length; i++) {
         var card = board.cards[hand_soldier_cards[i]]
 
         for (var j = 0; j < emptyPositions.length; j++) {
           var position = emptyPositions[j]
 
-          possibleActions.push({type: 'PLAY_SOLDIER', card: card.id, player: board.activePlayer, position: position})
+          possibleActions.push({type: 'PLAY_SOLDIER', card: card.id, player: board.activePlayer_id, position: position})
         }
       }
     }
 
-    possibleActions.push({type: 'END_TURN', player: board.activePlayer})
+    possibleActions.push({type: 'END_TURN', player: board.activePlayer_id})
     return possibleActions
   }
 
