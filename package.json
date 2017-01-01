@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "test": "set DEBUG=rc-server:* & nodemon --watch 'game/*.ts' --watch 'routes/*.ts' --exec ts-node app.js",
+    "test": "set DEBUG=rc-server:* & nodemon --watch 'src/*.ts' --exec ts-node app.js",
     "start": "ts-node app.js"
   },
   "dependencies": {

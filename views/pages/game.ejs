@@ -3,12 +3,71 @@
 <script>
 	$(document).ready(start)
 
+
 	function start() {
 
 		$.ajax({url: '/api/newGame', success: loadData})
 	}
 
 	function loadData(data) {
+		console.log(data)
+		var cards = data.game.board.cards
+
+		for (var i = 0; i < cards.length; i++)
+			showCard(cards[i])
+		for (var i = 0; i < data.possibleActions.length; i++)
+			showAction(data.possibleActions[i])
+	}
+
+	function getDiv(status, player_id) {
+		var txt = '#'
+
+		if (status == 'HAND')
+			txt += 'hand'
+		if (status == 'BOARD')
+			txt += 'board'
+
+		if (player_id == 0)
+			txt += '-me'
+		else
+			txt += '-them'
+
+		return txt
+	}
+	function showCard(card) {
+		if (card.status != 'DECK') {
+			var div = getDiv(card.status, card.player_id)
+
+			var text = "<div><strong>" + card.type + "</strong></div>"
+
+			$(div).append(text)
+		}
+	}
+
+	function showAction(action) {
+		$("#actions").append("<p><a href='/'>" + action.type + "</a></p>")
 	}
 </script>
+
+<div class='col-md-6'>
+	<div id='hand-them' hidden>
+
+	</div>
+
+	<div id='board-them'>
+		<h3>Their board</h3>
+	</div>
+	<div id='board-me'>
+		<h3>Your board</h3>
+	</div>
+
+	<div id='hand-me'>
+		<h3>Your hand</h3>
+	</div>
+
+</div>
+
+<div class='col-md-6' id='actions'>
+	<h3>Possible actions</h3>
+</div>
 <% include ../partials/footer %>

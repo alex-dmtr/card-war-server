@@ -10,8 +10,18 @@ var bodyParser = require('body-parser')
 var flash = require('connect-flash')
 global.db = require('./db.js')
 
+
+global.requiredAuthentication = function requiredAuthentication (req, res, next) {
+  if (req.session.user) {
+    next()
+  } else {
+    req.flash('info', 'You need to sign in first.')
+    res.redirect('/login')
+  }
+}
+
 var index = require('./routes/index')
-var api = require('./routes/api').default
+var api = require('./routes/api')
 
 var game = require('./routes/game')
 
@@ -61,15 +71,6 @@ app.use(function (req, res, next) {
   // console.log(res.locals.info);
   next()
 })
-
-global.requiredAuthentication = function requiredAuthentication (req, res, next) {
-  if (req.session.user) {
-    next()
-  } else {
-    req.flash('info', 'You need to sign in first.')
-    res.redirect('/login')
-  }
-}
 
 app.use('/', index)
 app.use('/api', api)
