@@ -1,19 +1,24 @@
-var Board = require('./board.js')
-var assert = require('assert')
+import {Board} from "./board"
+import {HistoryVar} from './historyVar'
+import {Action} from './action'
+import assert = require('assert')
 
-class Game {
+export class Game {
+
+  board: Board
+  history: HistoryVar[] 
 
   constructor () {
     this.board = new Board()
     this.history = []
   }
 
-  doAction (action) {
-    var board = this.board.copy()
+  doAction (action: Action) {
+    let board = this.board.copy()
 
     if (action.type == 'START_TURN') {
       board = board.drawCards(board.activePlayer_id, 0)
-      this.history.push({action: action, state: board})
+      this.history.push(new HistoryVar(action, board))
 
       this.board = board
     }
@@ -25,23 +30,23 @@ class Game {
       }
 
       this.board = board
-      this.history.push({action: action, state: board})
-      this.doAction({type: 'START_TURN'})
+      this.history.push(new HistoryVar(action, board))
+      this.doAction(new Action("START_TURN", null))
     }
     if (action.type == 'PLAY_SOLDIER') {
-      assert(board.players[action.player].mp > 0)
+      assert(board.players[action.player_id].mp > 0)
 
-      var occupant = board.findCard({player: action.player, state: 'BOARD', position: action.position})
+      let occupant = board.findCard({player: action.player_id, state: 'BOARD', position: action.position})
 
       assert(occupant == null)
 
-      var cardIndex = board.findCard({id: action.card})
+      let cardIndex = board.findCard({id: action.card})
 
       board.cards[cardIndex].position = action.position
-      board.cards[cardIndex].state = 'BOARD'
+      board.cards[cardIndex].status = 'BOARD'
 
       this.board = board
-      this.history.push({action: action, state: board})
+      this.history.push(new HistoryVar(action, board))
     }
   }
   //
@@ -62,7 +67,7 @@ class Game {
   // }
 
   startGame () {
-    var board = this.board
+    let board = this.board
 
     board = board.addArmy(Board.newArmy(), 0)
     board = board.addArmy(Board.newArmy(), 1)
@@ -78,24 +83,24 @@ class Game {
     board.activePlayer_id = 0
 
     this.board = board
-    this.doAction({type: 'START_TURN'})
+    this.doAction(new Action('START_TURN', null))
     // this.doAction({type: 'END_TURN'})
   }
   getPossibleActions () {
-    var board = this.board
+    let board = this.board
 
-    var hand_soldier_cards = board.findCards({player: board.activePlayer_id, state: 'HAND', cardType: 'SOLDIER'})
+    let hand_soldier_cards = board.findCards({player: board.activePlayer_id, state: 'HAND', cardType: 'SOLDIER'})
 
-    var possibleActions = []
+    let possibleActions = []
     if (board.players[board.activePlayer_id].mp > 0) {
-      var emptyPositions = board.findVacantBoardPositions(board.activePlayer_id)
-      for (var i = 0; i < hand_soldier_cards.length; i++) {
-        var card = board.cards[hand_soldier_cards[i]]
+      let emptyPositions = board.findVacantBoardPositions(board.activePlayer_id)
+      for (let i = 0; i < hand_soldier_cards.length; i++) {
+        let card = board.cards[hand_soldier_cards[i]]
 
-        for (var j = 0; j < emptyPositions.length; j++) {
-          var position = emptyPositions[j]
+        for (let j = 0; j < emptyPositions.length; j++) {
+          let position = emptyPositions[j]
 
-          possibleActions.push({type: 'PLAY_SOLDIER', card: card.id, player: board.activePlayer_id, position: position})
+          possibleActions.push({type: 'PLAY_SOLDIER', card: card._id, player: board.activePlayer_id, position: position})
         }
       }
     }
@@ -105,5 +110,3 @@ class Game {
   }
 
 }
-
-module.exports = Game

@@ -3,8 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "test": "set DEBUG=rc-server:* & nodemon app.js",
-    "start": "node app.js"
+    "build:live": "nodemon --exec ts-node app.js",
+    "test": "set DEBUG=rc-server:* & npm run build:live",
+    "start": "npm run build:live"
   },
   "dependencies": {
     "assert": "^1.4.1",
@@ -21,5 +22,8 @@
     "pg": "^6.1.2",
     "request": "^2.79.0",
     "serve-favicon": "~2.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^6.0.55"
   }
 }

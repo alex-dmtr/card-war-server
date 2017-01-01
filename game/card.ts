@@ -1,17 +1,21 @@
-class Card {
+export class Card {
+
+  _id: number
+  health: number
+  type: string
+  cardType: string
+  status: string
+  player_id: number
+  position: number
+
 
   constructor(_id) {
     this._id = _id
-    this.health = 0
-    this.type = ""
-    this.cardType = ""
-    this.status = ""
-    this.player_id = "";
 
   }
 
   copy() {
-    var newCard = new Card(this._id)
+    let newCard = new Card(this._id)
 
     newCard.type = this.type
     newCard.cardType = this.cardType
@@ -22,5 +26,3 @@ class Card {
     return newCard
   }
 }
-
-module.exports = Card

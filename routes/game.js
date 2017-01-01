@@ -1,9 +1,10 @@
 var express = require('express')
 var router = express.Router()
 // var Board = require('../game/board.js')
-var Game = require('../game/game.js')
+var Game = require('../game/game.ts').Game
 
 router.get('/newGame', function (req, res) {
+
   var game = new Game()
 
   game.startGame()
