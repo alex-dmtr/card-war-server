@@ -3,12 +3,12 @@ var assert = require('assert')
 
 class Game {
 
-  constructor() {
+  constructor () {
     this.board = new Board()
     this.history = []
   }
 
-  doAction(action) {
+  doAction (action) {
     var board = this.board.copy()
 
     if (action.type == 'START_TURN') {
@@ -16,14 +16,13 @@ class Game {
       this.history.push({action: action, state: board})
 
       this.board = board
-
-
     }
     if (action.type == 'END_TURN') {
-      if (board.activePlayer == 0)
+      if (board.activePlayer == 0) {
         board.activePlayer = 1
-      else
+      } else {
         board.activePlayer = 0
+      }
 
       this.board = board
       this.history.push({action: action, state: board})
@@ -62,12 +61,11 @@ class Game {
   //   }
   // }
 
-  startGame() {
+  startGame () {
     var board = this.board
 
-
-		board = board.addArmy(Board.newArmy(), 0)
-		board = board.addArmy(Board.newArmy(), 1)
+    board = board.addArmy(Board.newArmy(), 0)
+    board = board.addArmy(Board.newArmy(), 1)
 
     // randomize decks
     board = board.randomizeDeck(0)
@@ -82,10 +80,9 @@ class Game {
     this.board = board
     this.doAction({type: 'START_TURN'})
     // this.doAction({type: 'END_TURN'})
-
   }
-  getPossibleActions() {
-    var board = this.board;
+  getPossibleActions () {
+    var board = this.board
 
     var hand_soldier_cards = board.findCards({player: board.activePlayer, state: 'HAND', cardType: 'SOLDIER'})
 
@@ -99,7 +96,6 @@ class Game {
           var position = emptyPositions[j]
 
           possibleActions.push({type: 'PLAY_SOLDIER', card: card.id, player: board.activePlayer, position: position})
-
         }
       }
     }

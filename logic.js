@@ -1,4 +1,4 @@
-function doAction(_board, action) {
+function doAction (_board, action) {
   var board = _board.copy()
 
   if (action.type == 'START_TURN') {
@@ -10,6 +10,6 @@ function doAction(_board, action) {
   return board
 }
 
-function getPossibleActions(board) {
+function getPossibleActions (board) {
 
 }

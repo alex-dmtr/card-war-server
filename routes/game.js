@@ -3,17 +3,13 @@ var router = express.Router()
 // var Board = require('../game/board.js')
 var Game = require('../game/game.js')
 
-router.get('/newGame', function(req, res) {
+router.get('/newGame', function (req, res) {
+  var game = new Game()
 
-		var game = new Game()
-
-		game.startGame()
-		game.possibleActions = game.getPossibleActions()
-    res.setHeader('Content-Type', 'application/json');
-    res.send(game);
+  game.startGame()
+  game.possibleActions = game.getPossibleActions()
+  res.setHeader('Content-Type', 'application/json')
+  res.send(game)
 })
-
-
-
 
 module.exports = router

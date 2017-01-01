@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "test": "set DEBUG=card-war-server:* & nodemon app.js",
     "start": "node app.js"
   },
   "dependencies": {

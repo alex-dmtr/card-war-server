@@ -1,10 +1,11 @@
 class Board {
 
-  constructor() {
+  constructor () {
     this.players = []
 
-    for (var i = 0; i <= 1; i++)
+    for (var i = 0; i <= 1; i++) {
       this.players[i] = { id: i, mp: 3 }
+    }
 
     this.cards = []
 
@@ -15,18 +16,20 @@ class Board {
     this._cardID = 0
   }
 
-  copy() {
+  copy () {
     var board = new Board()
 
     board.players = []
 
-    for (var i = 0; i <= 1; i++)
+    for (var i = 0; i <= 1; i++) {
       board.players[i] = this.players[i]
+    }
 
     board.cards = []
 
-    for (var i = 0; i < this.cards.length; i++)
+    for (var i = 0; i < this.cards.length; i++) {
       board.cards[i] = this.cards[i]
+    }
 
     // board.history = []
     //
@@ -40,8 +43,7 @@ class Board {
     return board
   }
 
-  addCard(card) {
-
+  addCard (card) {
     var board = this.copy()
 
     var card = { id: board._cardID++, type: card.type, player: card.player, state: card.state, cardType: card.cardType }
@@ -49,21 +51,19 @@ class Board {
     board.cards.push(card)
 
     return board
-
   }
 
-
-  addArmy(army, player) {
-
+  addArmy (army, player) {
     var board = this.copy()
 
-    for (var i = 0; i < army.length; i++)
-      board = board.addCard({type:army[i].type, player: player, state: 'DECK', cardType: army[i].cardType})
+    for (var i = 0; i < army.length; i++) {
+      board = board.addCard({type: army[i].type, player: player, state: 'DECK', cardType: army[i].cardType})
+    }
 
     return board
   }
 
-  static newArmy() {
+  static newArmy () {
     var army = []
 
     for (var i = 1; i <= 5; i++) {
@@ -71,60 +71,60 @@ class Board {
       army.push({ type: 'CARD_CROSSBOWMAN', cardType: 'SOLDIER'})
     }
 
-    for (var i = 1; i <= 2; i++)
+    for (var i = 1; i <= 2; i++) {
       army.push({ type: 'CARD_KNIGHT', cardType: 'SOLDIER'})
+    }
 
     return army
   }
 
-  cardFitsCriteria(card, criteria) {
+  cardFitsCriteria (card, criteria) {
     var ok = true
 
     if (criteria != null) {
       if (criteria.hasOwnProperty('type')) {
-        if (card.type != criteria.type)
+        if (card.type != criteria.type) {
           ok = false
+        }
       }
 
       if (criteria.hasOwnProperty('player')) {
-        if (card.player != criteria.player)
-          ok = false
+        if (card.player != criteria.player) { ok = false }
       }
 
       if (criteria.hasOwnProperty('state')) {
-        if (card.state != criteria.state)
-          ok = false
+        if (card.state != criteria.state) { ok = false }
       }
 
       if (criteria.hasOwnProperty('id')) {
-        if (card.id != criteria.id)
-          ok = false
+        if (card.id != criteria.id) { ok = false }
       }
 
       if (criteria.hasOwnProperty('position')) {
-        if (card.position != criteria.position)
+        if (card.position != criteria.position) {
           ok = false
+        }
       }
 
       return ok
     }
   }
 
-
-  findCards(criteria) {
+  findCards (criteria) {
     var cards_found = []
 
     for (var i = 0; i < this.cards.length; i++) {
-        if (this.cardFitsCriteria(this.cards[i], criteria))
-          cards_found.push(i)
+      if (this.cardFitsCriteria(this.cards[i], criteria)) {
+        cards_found.push(i)
       }
-      return cards_found
+    }
+    return cards_found
   }
 
-  findCard(criteria) {
-    for (var i = 0; i < this.cards.length; i++)
-      if (this.cardFitsCriteria(this.cards[i], criteria))
-        return i
+  findCard (criteria) {
+    for (var i = 0; i < this.cards.length; i++) {
+      if (this.cardFitsCriteria(this.cards[i], criteria)) { return i }
+    }
     return null
   }
 
@@ -139,10 +139,10 @@ class Board {
   //   }
   // }
 
-  randomizeDeck(player) {
+  randomizeDeck (player) {
     var board = this.copy()
 
-    var deck_cards = board.findCards({player:player, state: 'DECK'})
+    var deck_cards = board.findCards({player: player, state: 'DECK'})
 
     var position = 0
     while (deck_cards.length > 0) {
@@ -154,10 +154,9 @@ class Board {
     }
 
     return board
-
   }
 
-  drawCards(player, amount) {
+  drawCards (player, amount) {
     var cards_drawn = []
 
     var deck_cards = this.findCards({player: player, state: 'DECK'})
@@ -168,34 +167,35 @@ class Board {
     var howManyCards = Math.min(deck_cards.length, amount)
 
     for (var i = 0; i < deck_cards.length; i++) {
-      if (i < howManyCards)
+      if (i < howManyCards) {
         board.cards[deck_cards[i]].state = 'HAND'
-      else
+      } else {
         board.cards[deck_cards[i]].position -= howManyCards
+      }
     }
 
     return board
   }
 
-  findVacantBoardPositions(player) {
-    var board = this;
+  findVacantBoardPositions (player) {
+    var board = this
 
     var positions = []
 
-    for (var flank = 1; flank <= 3; flank++)
-      for (var row = 1; row <= 2; row++)
-        for (var col = 1; col <= (row == 1? 2 : 3); col++) {
-
-          var occupant = board.findCard({position: {flank:flank, row:row, col: col}})
+    for (var flank = 1; flank <= 3; flank++) {
+      for (var row = 1; row <= 2; row++) {
+        for (var col = 1; col <= (row == 1 ? 2 : 3); col++) {
+          var occupant = board.findCard({position: {flank: flank, row: row, col: col}})
           console.log(occupant)
-          if (occupant == null)
-            positions.push({flank:flank, row:row, col: col})
+          if (occupant == null) {
+            positions.push({flank: flank, row: row, col: col})
+          }
         }
+      }
+    }
 
     return positions
   }
-
-
 
 }
 
