@@ -11,6 +11,8 @@ var flash = require('connect-flash')
 global.db = require('./db.js')
 
 var index = require('./routes/index')
+var api = require('./routes/api').default
+
 var game = require('./routes/game')
 
 var app = express()
@@ -70,6 +72,7 @@ global.requiredAuthentication = function requiredAuthentication (req, res, next)
 }
 
 app.use('/', index)
+app.use('/api', api)
 app.use('/game', game)
 
 // catch 404 and forward to error handler

@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "build:live": "nodemon --exec ts-node app.js",
+    "build:live": "nodemon --watch 'game/*.ts' --watch 'routes/*.ts' --exec ts-node app.js",
     "test": "set DEBUG=rc-server:* & npm run build:live",
     "start": "npm run build:live"
   },
@@ -11,6 +11,7 @@
     "assert": "^1.4.1",
     "async": "^2.1.4",
     "body-parser": "~1.15.2",
+    "browserify": "^13.1.1",
     "connect-flash": "^0.1.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.2.0",
@@ -21,7 +22,9 @@
     "morgan": "~1.7.0",
     "pg": "^6.1.2",
     "request": "^2.79.0",
-    "serve-favicon": "~2.3.0"
+    "serve-favicon": "~2.3.0",
+    "tsify": "^3.0.0",
+    "typescript": "^2.1.4"
   },
   "devDependencies": {
     "@types/node": "^6.0.55"

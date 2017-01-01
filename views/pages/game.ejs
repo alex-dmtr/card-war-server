@@ -1,0 +1,14 @@
+<% include ../partials/header %>
+
+<script>
+	$(document).ready(start)
+
+	function start() {
+
+		$.ajax({url: '/api/newGame', success: loadData})
+	}
+
+	function loadData(data) {
+	}
+</script>
+<% include ../partials/footer %>

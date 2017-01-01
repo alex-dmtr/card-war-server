@@ -17,7 +17,7 @@
   <link rel="stylesheet" href='/stylesheets/style.css'/>
 
   <title>Rule and Conquer 
-  <% if (page_name != null) { %>
+  <% if (typeof(page_name) != 'undefined') { %>
     - <%= page_name %>
   <% }%>
    </title>
@@ -35,7 +35,7 @@
 
 
           <% for (var i = 0; i < pages.length; i++) 
-            if (page_name != null) 
+            if (typeof(page_name) != 'undefined') 
               if (pages[i].name == page_name) {%>
                 <li class="nav-item active">
                  <a class="nav-link" href="<%=pages[i].url%>"><%=pages[i].name%><span class="sr-only">(current)</span></a>

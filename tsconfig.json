@@ -1,5 +1,8 @@
 {
+	"compilerOptions": {
+		"outDir": "src/compiled/"
+	},
 	"include": [
-		"game/*.ts"
+		"src/*.ts"
 	]
 }
