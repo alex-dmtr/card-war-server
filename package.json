@@ -24,6 +24,7 @@
     "pg": "^6.1.2",
     "request": "^2.79.0",
     "serve-favicon": "~2.3.0",
+    "ts-node": "^2.0.0",
     "tsify": "^3.0.0",
     "typescript": "^2.1.4"
   },
