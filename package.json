@@ -3,9 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "build:live": "nodemon --watch 'game/*.ts' --watch 'routes/*.ts' --exec ts-node app.js",
-    "test": "set DEBUG=rc-server:* & npm run build:live",
-    "start": "npm run build:live"
+    "test": "set DEBUG=rc-server:* & nodemon --watch 'game/*.ts' --watch 'routes/*.ts' --exec ts-node app.js",
+    "start": "ts-node app.js"
   },
   "dependencies": {
     "assert": "^1.4.1",
