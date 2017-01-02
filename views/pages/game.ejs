@@ -13,10 +13,16 @@
 		console.log(data)
 		var cards = data.game.board.cards
 
+		$("#hand-me").empty()
+		$("#hand-them").empty()
+		$("#board-me").empty()
+		$("#board-them").empty()
+		$("#actions").empty()
+
 		for (var i = 0; i < cards.length; i++)
 			showCard(cards[i])
 		for (var i = 0; i < data.possibleActions.length; i++)
-			showAction(data.possibleActions[i])
+			showAction(i, data.possibleActions[i])
 	}
 
 	function getDiv(status, player_id) {
@@ -44,8 +50,26 @@
 		}
 	}
 
-	function showAction(action) {
-		$("#actions").append("<p><a href='/'>" + action.type + "</a></p>")
+	function requestAction(action) {
+		$.get({url: '/api/game/action', data: action, success: loadData })
+	}
+
+
+	function showAction(index, action) {
+		var text = "<p id='action_" + index + "' ><a href='/'>" + action.type + "</a></p>"
+
+
+		text += "<ul>"
+		if (action.card != null)
+			text += "<li>" + action.card.type + "</li>"
+
+		text += "</ul>"
+		$("#actions").append(text)
+
+		$("#action_" + index).click(function(e) {
+			e.preventDefault()
+			requestAction(action)
+		})
 	}
 </script>
 
@@ -54,20 +78,26 @@
 
 	</div>
 
-	<div id='board-them'>
+
 		<h3>Their board</h3>
-	</div>
-	<div id='board-me'>
-		<h3>Your board</h3>
+		<div id='board-them'>
 	</div>
 
-	<div id='hand-me'>
-		<h3>Your hand</h3>
+		<h3>Your board</h3>
+		<div id='board-me'>
 	</div>
+
+
+	<h3>Your hand</h3>
+		<div id='hand-me'>
+		</div>
 
 </div>
 
-<div class='col-md-6' id='actions'>
+<div class='col-md-6'>
 	<h3>Possible actions</h3>
+	<div id='actions'>
+
+	</div>
 </div>
 <% include ../partials/footer %>

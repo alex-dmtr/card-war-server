@@ -22,12 +22,13 @@ export class Card {
 
     newCard.type = this.type
     newCard.cardType = this.cardType
+    // newCard.attack = this.attack
     newCard.health = this.health
     newCard.status = this.status
     newCard.player_id = this.player_id
     newCard.position = this.position
     newCard.boardPosition = this.boardPosition
-    
+
     return newCard
   }
 }

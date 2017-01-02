@@ -1,17 +1,18 @@
+import { Player } from './player'
 import { Card } from './card'
 import { BoardPosition } from './boardPosition'
 
 export class Action 
 {
 	type: string
-	player_id: number
+	player: Player
 	boardPosition: BoardPosition
 	position: number
 	card: Card
 
-	constructor(type: string, player_id: number) 
+	constructor(type: string, player: Player) 
 	{
 		this.type = type
-		this.player_id = player_id
+		this.player = player;
 	}	
 }

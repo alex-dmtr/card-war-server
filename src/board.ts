@@ -1,5 +1,6 @@
 import { Card } from './card'
 import { Player } from './player'
+import { BoardPosition } from './boardPosition'
 import Debug = require('debug') 
 let debug = Debug('rc-server:board')
 
@@ -191,10 +192,18 @@ export class Board {
     }
   }
 
-  findVacantBoardPositions (player) {
-    let board = this
+  findVacantBoardPositions (player) : BoardPosition[] {
 
-    let positions = []
+    let positions = new Array<BoardPosition>()
+
+    let boardCards = this.findCards({player: player._id, state: 'BOARD'})
+
+    if (boardCards.length > 0) {
+      for (let i = 0; i < boardCards.length; i++)
+        positions.push(boardCards[i].boardPosition)
+    }
+    else
+      positions.push(new BoardPosition(0))
 
     // for (let flank = 1; flank <= 3; flank++) {
     //   for (let row = 1; row <= 2; row++) {

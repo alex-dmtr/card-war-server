@@ -34,15 +34,15 @@ export class Game {
       this.doAction(new Action("START_TURN", null))
     }
     if (action.type == 'PLAY_SOLDIER') {
-      assert(board.players[action.player_id].mp > 0)
+      assert(action.player.mp > 0)
 
-      let occupant = board.findCard({player: action.player_id, state: 'BOARD', position: action.position})
+      let occupant = board.findCard({player: action.player._id, state: 'BOARD', boardPosition: action.boardPosition})
+      let boardPosition = action.boardPosition
 
-      assert(occupant == null)
 
-      let  card= board.findCard({id: action.card})
+      let  card= board.findCard({id: action.card._id})
 
-      card.position = action.position
+      card.boardPosition = boardPosition
       card.status = 'BOARD'
 
       this.board = board
@@ -84,12 +84,12 @@ export class Game {
     this.doAction(new Action('START_TURN', null))
     // this.doAction({type: 'END_TURN'})
   }
-  getPossibleActions () {
+  getPossibleActions () : Action[] {
     let board = this.board
 
     let hand_soldier_cards = board.findCards({player: board.activePlayer_id, state: 'HAND', cardType: 'SOLDIER'})
 
-    let possibleActions = []
+    let possibleActions = new Array<Action>()
     if (board.players[board.activePlayer_id].mp > 0) {
       let emptyPositions = board.findVacantBoardPositions(board.activePlayer_id)
       for (let i = 0; i < hand_soldier_cards.length; i++) {
@@ -98,12 +98,16 @@ export class Game {
         for (let j = 0; j < emptyPositions.length; j++) {
           let position = emptyPositions[j]
 
-          possibleActions.push({type: 'PLAY_SOLDIER', card: card._id, player: board.activePlayer_id, position: position})
+          let action = new Action('PLAY_SOLDIER', board.players[board.activePlayer_id])
+          action.card = card
+          action.boardPosition = position
+          possibleActions.push(action)
         }
       }
     }
 
-    possibleActions.push({type: 'END_TURN', player: board.activePlayer_id})
+    let action = new Action('END_TURN', board.players[board.activePlayer_id])
+    possibleActions.push(action)
     return possibleActions
   }
 
