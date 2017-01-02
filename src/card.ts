@@ -1,3 +1,5 @@
+import { BoardPosition } from './boardPosition'
+
 export class Card {
 
   _id: number
@@ -7,6 +9,7 @@ export class Card {
   status: string
   player_id: number
   position: number
+  boardPosition: BoardPosition
 
 
   constructor(_id) {
@@ -22,7 +25,9 @@ export class Card {
     newCard.health = this.health
     newCard.status = this.status
     newCard.player_id = this.player_id
-
+    newCard.position = this.position
+    newCard.boardPosition = this.boardPosition
+    
     return newCard
   }
 }

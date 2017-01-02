@@ -1,5 +1,7 @@
 import { Card } from './card'
 import { Player } from './player'
+import Debug = require('debug') 
+let debug = Debug('rc-server:board')
 
 
 export class Board {
@@ -55,9 +57,8 @@ export class Board {
   }
 
   addCard (card) {
-    let board = this.copy()
 
-    let newCard = new Card(board._cardID++)
+    let newCard = new Card(this._cardID++)
 
     newCard.type = card.type
     newCard.player_id = card.player_id
@@ -65,19 +66,16 @@ export class Board {
     newCard.cardType = card.cardType
     newCard.health = card.health
   
-    board.cards.push(newCard)
+    this.cards.push(newCard)
 
-    return board
+    return newCard  
   }
 
   addArmy (army, player) {
-    let board = this.copy()
 
     for (let i = 0; i < army.length; i++) {
-      board = board.addCard({type: army[i].type, player_id: player, status: 'DECK', cardType: army[i].cardType})
+      this.addCard({type: army[i].type, player_id: player, status: 'DECK', cardType: army[i].cardType})
     }
-
-    return board
   }
 
   static newArmy () {
@@ -127,20 +125,20 @@ export class Board {
     }
   }
 
-  findCards (criteria) {
-    let cards_found = []
+  findCards (criteria): Card[] {
+    let cards_found = new Array<Card>()
 
     for (let i = 0; i < this.cards.length; i++) {
       if (this.cardFitsCriteria(this.cards[i], criteria)) {
-        cards_found.push(i)
+        cards_found.push(this.cards[i])
       }
     }
     return cards_found
   }
 
-  findCard (criteria) {
+  findCard (criteria): Card {
     for (let i = 0; i < this.cards.length; i++) {
-      if (this.cardFitsCriteria(this.cards[i], criteria)) { return i }
+      if (this.cardFitsCriteria(this.cards[i], criteria)) { return this.cards[i] }
     }
     return null
   }
@@ -157,41 +155,40 @@ export class Board {
   // }
 
   randomizeDeck (player) {
-    let board = this.copy()
 
-    let deck_cards = board.findCards({player: player, state: 'DECK'})
+    let deck_cards = this.findCards({player: player, state: 'DECK'})
 
     let position = 0
-    while (deck_cards.length > 0) {
-      let index = Math.floor(Math.random() * deck_cards.length)
 
-      board.cards[deck_cards[index]].position = position++
+    for (position = 0; position < deck_cards.length; position++)
+        deck_cards[position].position = position;
 
-      deck_cards.splice(index, 1)
-    }
+    for (position = 0; position < deck_cards.length; position++) {
+      let index = position + Math.floor(Math.random() * (deck_cards.length - position))
 
-    return board
+      let tmp = deck_cards[index].position;
+      deck_cards[index].position = deck_cards[position].position;
+      deck_cards[position].position = tmp; 
+      }
+
   }
 
   drawCards (player_id : number, amount : number) {
     let cards_drawn = []
 
     let deck_cards = this.findCards({player: player_id, state: 'DECK'})
-    deck_cards.sort((a, b) => this.cards[a].position - this.cards[b].position)
+    deck_cards.sort((a, b) => a.position - b.position)
 
-    let board = this.copy()
 
     let howManyCards = Math.min(deck_cards.length, amount)
 
     for (let i = 0; i < deck_cards.length; i++) {
       if (i < howManyCards) {
-        board.cards[deck_cards[i]].status = 'HAND'
+        deck_cards[i].status = 'HAND'
       } else {
-        board.cards[deck_cards[i]].position -= howManyCards
+        deck_cards[i].position -= howManyCards
       }
     }
-
-    return board
   }
 
   findVacantBoardPositions (player) {
@@ -199,17 +196,17 @@ export class Board {
 
     let positions = []
 
-    for (let flank = 1; flank <= 3; flank++) {
-      for (let row = 1; row <= 2; row++) {
-        for (let col = 1; col <= (row == 1 ? 2 : 3); col++) {
-          let occupant = board.findCard({position: {flank: flank, row: row, col: col}})
-          console.log(occupant)
-          if (occupant == null) {
-            positions.push({flank: flank, row: row, col: col})
-          }
-        }
-      }
-    }
+    // for (let flank = 1; flank <= 3; flank++) {
+    //   for (let row = 1; row <= 2; row++) {
+    //     for (let col = 1; col <= (row == 1 ? 2 : 3); col++) {
+    //       let occupant = board.findCard({position: {flank: flank, row: row, col: col}})
+    //       // console.log(occupant)
+    //       if (occupant == null) {
+    //         positions.push({flank: flank, row: row, col: col})
+    //       }
+    //     }
+    //   }
+    // }
 
     return positions
   }

@@ -1,10 +1,8 @@
 export class BoardPosition 
 {
-	row: number
 	column: number
 
-	constructor(row: number, column: number) {
-		this.row = row
+	constructor(column: number) {
 		this.column = column
 	}
 }

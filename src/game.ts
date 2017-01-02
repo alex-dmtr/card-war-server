@@ -17,7 +17,7 @@ export class Game {
     let board = this.board.copy()
 
     if (action.type == 'START_TURN') {
-      board = board.drawCards(board.activePlayer_id, 0)
+      board.drawCards(board.activePlayer_id, 0)
       this.history.push(new HistoryVar(action, board))
 
       this.board = board
@@ -29,8 +29,8 @@ export class Game {
         board.activePlayer_id = 0
       }
 
-      this.board = board
       this.history.push(new HistoryVar(action, board))
+      this.board = board
       this.doAction(new Action("START_TURN", null))
     }
     if (action.type == 'PLAY_SOLDIER') {
@@ -40,10 +40,10 @@ export class Game {
 
       assert(occupant == null)
 
-      let cardIndex = board.findCard({id: action.card})
+      let  card= board.findCard({id: action.card})
 
-      board.cards[cardIndex].position = action.position
-      board.cards[cardIndex].status = 'BOARD'
+      card.position = action.position
+      card.status = 'BOARD'
 
       this.board = board
       this.history.push(new HistoryVar(action, board))
@@ -67,22 +67,20 @@ export class Game {
   // }
 
   startGame () {
-    let board = this.board
 
-    board = board.addArmy(Board.newArmy(), 0)
-    board = board.addArmy(Board.newArmy(), 1)
+    this.board.addArmy(Board.newArmy(), 0)
+    this.board.addArmy(Board.newArmy(), 1)
 
     // randomize decks
-    board = board.randomizeDeck(0)
-    board = board.randomizeDeck(1)
+    this.board.randomizeDeck(0)
+    this.board.randomizeDeck(1)
 
     // take out 4 for each player
-    board = board.drawCards(0, 4)
-    board = board.drawCards(1, 4)
+    this.board.drawCards(0, 4)
+    this.board.drawCards(1, 4)
 
-    board.activePlayer_id = 0
+    this.board.activePlayer_id = 0
 
-    this.board = board
     this.doAction(new Action('START_TURN', null))
     // this.doAction({type: 'END_TURN'})
   }
@@ -95,7 +93,7 @@ export class Game {
     if (board.players[board.activePlayer_id].mp > 0) {
       let emptyPositions = board.findVacantBoardPositions(board.activePlayer_id)
       for (let i = 0; i < hand_soldier_cards.length; i++) {
-        let card = board.cards[hand_soldier_cards[i]]
+        let card = hand_soldier_cards[i]
 
         for (let j = 0; j < emptyPositions.length; j++) {
           let position = emptyPositions[j]
